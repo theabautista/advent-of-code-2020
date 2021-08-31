@@ -1,0 +1,12 @@
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.csprojAssemblyReference.cache
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.AssemblyInfoInputs.cache
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.AssemblyInfo.cs
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.csproj.CoreCompileInputs.cache
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/bin/Debug/netcoreapp3.1/day-2.deps.json
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/bin/Debug/netcoreapp3.1/day-2.runtimeconfig.json
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/bin/Debug/netcoreapp3.1/day-2.runtimeconfig.dev.json
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/bin/Debug/netcoreapp3.1/day-2.dll
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/bin/Debug/netcoreapp3.1/day-2.pdb
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.dll
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.pdb
+/Users/apple/Documents/Coding/c#-projects/advent-of-code/day-2/obj/Debug/netcoreapp3.1/day-2.genruntimeconfig.cache
