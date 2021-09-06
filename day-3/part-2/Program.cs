@@ -12,7 +12,6 @@ namespace part_1
         public static void Main(string[] args)
         {   
             // global var
-            string line;
             List<int> tree_crash_array = new List<int>();
             int[,] traverse = new int[,] { {1,1},{3,1},{5,1},{7,1},{1,2} };
             
@@ -26,30 +25,18 @@ namespace part_1
             for (int i = 0; i < traverse.GetLength(0); i++)
             {
                 int current_position = 0;
-                int current_line = 1;
+                // int current_line = 1;
                 int tree_crash = 0;
-                while ((line = file.ReadLine()) != null)  // reads each line of file one at a time, skipping the first line
-                {
-                    if (current_line == 1 && traverse[i,1] == 1) // skips first line of file
-                    {
-                        current_line += 1;
-                        continue;
-                    } else if (current_line == 1 && traverse[i,1] != 1 )
-                    {
-                        current_line += traverse[i,1];
-                        continue;
-                    }
-
+                for (int n=traverse[i,1]; n<lines.GetLength(0); n+=n=traverse[i,1])  // reads each line of file one at a time, skipping the first line
+                {   
                     // update position (to the right)
                     current_position += traverse[i,0];
                     
                     // check if there is a tree in current position
-                    if (line[current_position%line.Length]=='#')
+                    if (lines[n][current_position%lines[n].Length]=='#')
                     {
                         tree_crash++;
                     }
-                    // update line (moving down)
-                    current_line += traverse[i,1];  
                 }
                 if (tree_crash != 0) {tree_crash_array.Add(tree_crash);}
             }
