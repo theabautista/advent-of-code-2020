@@ -13,11 +13,12 @@ namespace part_1
 
             Dictionary<string,string> passport = new Dictionary<string,string>();
             uint count = 0;
+            uint numfiles = 0;
             string line;
 
             while ((line = file.ReadLine()) != null)
             {
-                while (line != "")
+                if (line != "")
                 {
                     string[] parsed_string = new string[] {line};
                     
@@ -35,16 +36,31 @@ namespace part_1
                             passport.Add(separated_key_val_pair[0],separated_key_val_pair[1]);
                         }
                     }
+                } else
+                {
+                    numfiles++;
+                    // check if passport is valid
+                    if (passport.ContainsKey("byr") && passport.ContainsKey("iyr") && passport.ContainsKey("eyr") && passport.ContainsKey("hgt") && passport.ContainsKey("hcl") && passport.ContainsKey("ecl") && passport.ContainsKey("pid"))
+                    {
+                        count++;
+                    }
+                    passport.Clear();
                 }
+            }
 
+            if (passport.Count != 0)
+            {   
+                numfiles++;
                 // check if passport is valid
-                if (passport.ContainsKey("byr") && passport.ContainsKey("iyr") && passport.ContainsKey("byr") && passport.ContainsKey("eyr") && passport.ContainsKey("hgt") && passport.ContainsKey("hcl") && passport.ContainsKey("ecl") && passport.ContainsKey("pid"))
+                if (passport.ContainsKey("byr") && passport.ContainsKey("iyr") && passport.ContainsKey("eyr") && passport.ContainsKey("hgt") && passport.ContainsKey("hcl") && passport.ContainsKey("ecl") && passport.ContainsKey("pid"))
                 {
                     count++;
                 }
-                
-                passport.Clear();
             }
+
+            Console.WriteLine($"Total number of files: {numfiles}");
+            Console.WriteLine($"Number of valid passports: {count}");
+            
         }
     }
 }
