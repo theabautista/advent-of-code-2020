@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
 
 namespace part_1
 {
@@ -6,17 +9,42 @@ namespace part_1
     {
         static void Main(string[] args)
         {
-            // load file as string array
-            
-            // run through each line and separate using whitespaces
-            // either enter into dictionary or split the string (like below)
+            StreamReader file = new StreamReader(args[0]);
 
-            //--------------------------------------------------
-            // read line by line
-            // for each line
-            // identify key value pairs by first splitting by spaces then colons
-            // identify if all keys exist
-            // if not, increase counter 
+            Dictionary<string,string> passport = new Dictionary<string,string>();
+            uint count = 0;
+            string line;
+
+            while ((line = file.ReadLine()) != null)
+            {
+                while (line != "")
+                {
+                    string[] parsed_string = new string[] {line};
+                    
+                    // parse line by separating via colons and spaces
+                    if (line.Contains(" "))
+                    {
+                        parsed_string = line.Split(" ");
+                    }
+                    
+                    foreach (string key_val_pair in parsed_string)
+                    {
+                        string[] separated_key_val_pair = key_val_pair.Split(":");
+                        if (!passport.ContainsKey(separated_key_val_pair[0]))
+                        {
+                            passport.Add(separated_key_val_pair[0],separated_key_val_pair[1]);
+                        }
+                    }
+                }
+
+                // check if passport is valid
+                if (passport.ContainsKey("byr") && passport.ContainsKey("iyr") && passport.ContainsKey("byr") && passport.ContainsKey("eyr") && passport.ContainsKey("hgt") && passport.ContainsKey("hcl") && passport.ContainsKey("ecl") && passport.ContainsKey("pid"))
+                {
+                    count++;
+                }
+                
+                passport.Clear();
+            }
         }
     }
 }
