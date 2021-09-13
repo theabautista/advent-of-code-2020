@@ -29,9 +29,71 @@ namespace part_1
                     }
                     
                     foreach (string key_val_pair in parsed_string)
-                    {
+                    {   
+                        bool success = false;
                         string[] separated_key_val_pair = key_val_pair.Split(":");
-                        if (!passport.ContainsKey(separated_key_val_pair[0]))
+                        
+                        // see if values are valid for appropriate field
+                        if (separated_key_val_pair[0] == "byr")
+                        {
+                            if (separated_key_val_pair[1].Length == 4)
+                            {
+                                bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
+                                success = (isNumeric && int.Parse(separated_key_val_pair[1]) >= 1920 && int.Parse(separated_key_val_pair[1]) <=2002) ? true : false;
+                            }
+                        } else if (separated_key_val_pair[0] == "iyr")
+                        {
+                            if (separated_key_val_pair[1].Length == 4)
+                            {
+                                bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
+                                success = (separated_key_val_pair[1].Length == 4 && int.Parse(separated_key_val_pair[1]) >= 2010 && int.Parse(separated_key_val_pair[1]) <=2020) ? true : false;
+                            }
+                        } else if (separated_key_val_pair[0] == "eyr")
+                        {
+                            if (separated_key_val_pair[1].Length == 4)
+                            {
+                                bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
+                                success = (separated_key_val_pair[1].Length == 4 && int.Parse(separated_key_val_pair[1]) >= 2020 && int.Parse(separated_key_val_pair[1]) <=2030) ? true : false;
+                            }
+                        } else if (separated_key_val_pair[0] == "hgt")
+                        {
+                            string unit = separated_key_val_pair[1].Substring(separated_key_val_pair[1].Length-2);
+                            if (unit == "cm")
+                            {
+                                var isNumeric = int.TryParse(separated_key_val_pair[1].Substring(0,3), out int n);
+                                success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,3)) >= 150 && int.Parse(separated_key_val_pair[1].Substring(0,3)) <= 193) ? true : false;
+                            } else if (unit == "in")
+                            {
+                                var isNumeric = int.TryParse(separated_key_val_pair[1].Substring(0,2), out int n);
+                                success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,2)) >= 59 && int.Parse(separated_key_val_pair[1].Substring(0,3)) <= 76) ? true : false;
+                            }
+                        } else if (separated_key_val_pair[0] == "hcl" && separated_key_val_pair[1][0] == '#')
+                        {
+                            if (separated_key_val_pair[1].Length == 7 )
+                            {
+                                bool validLetter = true;
+                                for (int i = 1; i < separated_key_val_pair[1].Length; i++)
+                                {
+                                    char result = separated_key_val_pair[1][i];
+                                    Console.WriteLine(result);
+                                    if ((!Char.IsDigit(separated_key_val_pair[1][i])) && (!"abcdef".Contains(separated_key_val_pair[1][i])))
+                                    {
+                                        validLetter = false;
+                                        break;
+                                    }
+                                }
+                                success = validLetter;
+                            }
+                        } else if (separated_key_val_pair[0] == "ecl")
+                        {
+                            string[] validECL = new string[] {"amb","blu","brn","gry","hzl","oth"};
+                            success = Array.Exists(validECL, ecl => ecl.Contains(separated_key_val_pair[1]));
+                        } else if (separated_key_val_pair[0] == "pid" && separated_key_val_pair[1].Length == 9)
+                        {
+                            success = int.TryParse(separated_key_val_pair[1], out int n);
+                        }
+
+                        if (!passport.ContainsKey(separated_key_val_pair[0]) && success == true)
                         {
                             passport.Add(separated_key_val_pair[0],separated_key_val_pair[1]);
                         }
