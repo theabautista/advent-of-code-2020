@@ -18,6 +18,7 @@ namespace part_1
 
             while ((line = file.ReadLine()) != null)
             {
+                Console.WriteLine(line);
                 if (line != "")
                 {
                     string[] parsed_string = new string[] {line};
@@ -65,7 +66,7 @@ namespace part_1
                             } else if (unit == "in")
                             {
                                 var isNumeric = int.TryParse(separated_key_val_pair[1].Substring(0,2), out int n);
-                                success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,2)) >= 59 && int.Parse(separated_key_val_pair[1].Substring(0,3)) <= 76) ? true : false;
+                                success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,2)) >= 59 && int.Parse(separated_key_val_pair[1].Substring(0,2)) <= 76) ? true : false;
                             }
                         } else if (separated_key_val_pair[0] == "hcl" && separated_key_val_pair[1][0] == '#')
                         {
@@ -74,8 +75,6 @@ namespace part_1
                                 bool validLetter = true;
                                 for (int i = 1; i < separated_key_val_pair[1].Length; i++)
                                 {
-                                    char result = separated_key_val_pair[1][i];
-                                    Console.WriteLine(result);
                                     if ((!Char.IsDigit(separated_key_val_pair[1][i])) && (!"abcdef".Contains(separated_key_val_pair[1][i])))
                                     {
                                         validLetter = false;
@@ -86,7 +85,7 @@ namespace part_1
                             }
                         } else if (separated_key_val_pair[0] == "ecl")
                         {
-                            string[] validECL = new string[] {"amb","blu","brn","gry","hzl","oth"};
+                            string[] validECL = new string[] {"amb","blu","brn","gry","grn","hzl","oth"};
                             success = Array.Exists(validECL, ecl => ecl.Contains(separated_key_val_pair[1]));
                         } else if (separated_key_val_pair[0] == "pid" && separated_key_val_pair[1].Length == 9)
                         {
@@ -105,6 +104,7 @@ namespace part_1
                     if (passport.ContainsKey("byr") && passport.ContainsKey("iyr") && passport.ContainsKey("eyr") && passport.ContainsKey("hgt") && passport.ContainsKey("hcl") && passport.ContainsKey("ecl") && passport.ContainsKey("pid"))
                     {
                         count++;
+                        Console.WriteLine("VALID");
                     }
                     passport.Clear();
                 }
@@ -120,7 +120,7 @@ namespace part_1
                 }
             }
 
-            Console.WriteLine($"Total number of files: {numfiles}");
+            Console.WriteLine($"Total number of passports: {numfiles}");
             Console.WriteLine($"Number of valid passports: {count}");
             
         }
