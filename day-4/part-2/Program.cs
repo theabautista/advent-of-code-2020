@@ -35,29 +35,34 @@ namespace part_1
                         string[] separated_key_val_pair = key_val_pair.Split(":");
                         
                         // see if values are valid for appropriate field
-                        if (separated_key_val_pair[0] == "byr")
+                        switch (separated_key_val_pair[0])
                         {
+                        case "byr":
+                        
                             if (separated_key_val_pair[1].Length == 4)
                             {
                                 bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
                                 success = (isNumeric && int.Parse(separated_key_val_pair[1]) >= 1920 && int.Parse(separated_key_val_pair[1]) <=2002) ? true : false;
                             }
-                        } else if (separated_key_val_pair[0] == "iyr")
-                        {
+                            break;
+                        case "iyr":
+                        
                             if (separated_key_val_pair[1].Length == 4)
                             {
                                 bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
                                 success = (separated_key_val_pair[1].Length == 4 && int.Parse(separated_key_val_pair[1]) >= 2010 && int.Parse(separated_key_val_pair[1]) <=2020) ? true : false;
                             }
-                        } else if (separated_key_val_pair[0] == "eyr")
-                        {
+                            break;
+                        case "eyr":
+                        
                             if (separated_key_val_pair[1].Length == 4)
                             {
                                 bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
                                 success = (separated_key_val_pair[1].Length == 4 && int.Parse(separated_key_val_pair[1]) >= 2020 && int.Parse(separated_key_val_pair[1]) <=2030) ? true : false;
                             }
-                        } else if (separated_key_val_pair[0] == "hgt")
-                        {
+                            break;
+                        case "hgt":
+                        
                             string unit = separated_key_val_pair[1].Substring(separated_key_val_pair[1].Length-2);
                             if (unit == "cm")
                             {
@@ -68,9 +73,10 @@ namespace part_1
                                 var isNumeric = int.TryParse(separated_key_val_pair[1].Substring(0,2), out int n);
                                 success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,2)) >= 59 && int.Parse(separated_key_val_pair[1].Substring(0,2)) <= 76) ? true : false;
                             }
-                        } else if (separated_key_val_pair[0] == "hcl" && separated_key_val_pair[1][0] == '#')
-                        {
-                            if (separated_key_val_pair[1].Length == 7 )
+                            break;
+                        case "hcl":
+                        
+                            if (separated_key_val_pair[1].Length == 7 && separated_key_val_pair[1][0] == '#')
                             {
                                 bool validLetter = true;
                                 for (int i = 1; i < separated_key_val_pair[1].Length; i++)
@@ -83,19 +89,24 @@ namespace part_1
                                 }
                                 success = validLetter;
                             }
-                        } else if (separated_key_val_pair[0] == "ecl")
-                        {
+                            break;
+                        case "ecl":
+                        
                             string[] validECL = new string[] {"amb","blu","brn","gry","grn","hzl","oth"};
                             success = Array.Exists(validECL, ecl => ecl.Contains(separated_key_val_pair[1]));
-                        } else if (separated_key_val_pair[0] == "pid" && separated_key_val_pair[1].Length == 9)
-                        {
+                            break;
+                        case "pid":
+                            if (separated_key_val_pair[1].Length == 9)
+                            {
                             success = int.TryParse(separated_key_val_pair[1], out int n);
+                            }
+                            break;
                         }
-
+                        
                         if (!passport.ContainsKey(separated_key_val_pair[0]) && success == true)
                         {
                             passport.Add(separated_key_val_pair[0],separated_key_val_pair[1]);
-                        }
+                        } 
                     }
                 } else
                 {
