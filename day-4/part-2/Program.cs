@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 
 namespace part_1
 {
@@ -33,76 +33,27 @@ namespace part_1
                     {   
                         bool success = false;
                         string[] separated_key_val_pair = key_val_pair.Split(":");
-                        
+
+                        bool isIntInRange(int low, int high) => int.TryParse(separated_key_val_pair[1], out int value) && value >= low && value <= high;
                         // see if values are valid for appropriate field
-                        switch (separated_key_val_pair[0])
+                        success = separated_key_val_pair[0] switch
                         {
-                        case "byr":
-                        
-                            if (separated_key_val_pair[1].Length == 4)
-                            {
-                                bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
-                                success = (isNumeric && int.Parse(separated_key_val_pair[1]) >= 1920 && int.Parse(separated_key_val_pair[1]) <=2002) ? true : false;
-                            }
-                            break;
-                        case "iyr":
-                        
-                            if (separated_key_val_pair[1].Length == 4)
-                            {
-                                bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
-                                success = (separated_key_val_pair[1].Length == 4 && int.Parse(separated_key_val_pair[1]) >= 2010 && int.Parse(separated_key_val_pair[1]) <=2020) ? true : false;
-                            }
-                            break;
-                        case "eyr":
-                        
-                            if (separated_key_val_pair[1].Length == 4)
-                            {
-                                bool isNumeric = int.TryParse(separated_key_val_pair[1], out int n);
-                                success = (separated_key_val_pair[1].Length == 4 && int.Parse(separated_key_val_pair[1]) >= 2020 && int.Parse(separated_key_val_pair[1]) <=2030) ? true : false;
-                            }
-                            break;
-                        case "hgt":
-                        
-                            string unit = separated_key_val_pair[1].Substring(separated_key_val_pair[1].Length-2);
-                            if (unit == "cm")
-                            {
-                                var isNumeric = int.TryParse(separated_key_val_pair[1].Substring(0,3), out int n);
-                                success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,3)) >= 150 && int.Parse(separated_key_val_pair[1].Substring(0,3)) <= 193) ? true : false;
-                            } else if (unit == "in")
-                            {
-                                var isNumeric = int.TryParse(separated_key_val_pair[1].Substring(0,2), out int n);
-                                success = (isNumeric && int.Parse(separated_key_val_pair[1].Substring(0,2)) >= 59 && int.Parse(separated_key_val_pair[1].Substring(0,2)) <= 76) ? true : false;
-                            }
-                            break;
-                        case "hcl":
-                        
-                            if (separated_key_val_pair[1].Length == 7 && separated_key_val_pair[1][0] == '#')
-                            {
-                                bool validLetter = true;
-                                for (int i = 1; i < separated_key_val_pair[1].Length; i++)
-                                {
-                                    if ((!Char.IsDigit(separated_key_val_pair[1][i])) && (!"abcdef".Contains(separated_key_val_pair[1][i])))
-                                    {
-                                        validLetter = false;
-                                        break;
-                                    }
-                                }
-                                success = validLetter;
-                            }
-                            break;
-                        case "ecl":
-                        
-                            string[] validECL = new string[] {"amb","blu","brn","gry","grn","hzl","oth"};
-                            success = Array.Exists(validECL, ecl => ecl.Contains(separated_key_val_pair[1]));
-                            break;
-                        case "pid":
-                            if (separated_key_val_pair[1].Length == 9)
-                            {
-                            success = int.TryParse(separated_key_val_pair[1], out int n);
-                            }
-                            break;
-                        }
-                        
+                            "byr" => isIntInRange(1920,2002),
+                            "iyr" => isIntInRange(2010,2020),
+                            "eyr" => isIntInRange(2020,2030), // make these statements/tests into inline bool functions
+                            "hgt" => int.TryParse(separated_key_val_pair[1][..^2], out int hgt) &&
+                                        separated_key_val_pair[1][^2..] switch
+                                        {
+                                            "cm" => hgt >= 150 && hgt <= 193,
+                                            "in" => hgt >= 59 && hgt <= 76,
+                                            _ => false,
+                                        },
+                            "hcl" => separated_key_val_pair[1].Length == 7 && separated_key_val_pair[1][0] == '#' && separated_key_val_pair[1][1..]
+                              .All(c => char.IsDigit(c) || "abcdef".Contains(c)),
+                            "ecl" => new string[] { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" }.Contains(separated_key_val_pair[1]),
+                            "pid" => separated_key_val_pair[1].Length == 9 && int.TryParse(separated_key_val_pair[1], out int n),
+                            _ => false,
+                        };
                         if (!passport.ContainsKey(separated_key_val_pair[0]) && success == true)
                         {
                             passport.Add(separated_key_val_pair[0],separated_key_val_pair[1]);
