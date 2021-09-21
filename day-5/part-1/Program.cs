@@ -36,7 +36,7 @@ namespace part_1
                         min_value += Math.Ceiling((max_value - min_value) / 2.0);
                         break;
                 }
-                return FindRow(boarding_pass_subset,row_idx+1,min_value,max_value);
+                return FindColumn(boarding_pass_subset,row_idx+1,min_value,max_value);
             }
             return min_value;
         }
@@ -51,7 +51,7 @@ namespace part_1
             while ((line = file.ReadLine()) != null)
             {
                 double row = FindRow(line.Substring(0,7),0,0,127);
-                double col = FindColumn(line[..2],0,0,7);
+                double col = FindColumn(line[^3..],0,0,7);
 
                 double seat_ID = (row * 8) + col;
                 highest_seat_ID = seat_ID > highest_seat_ID ? seat_ID : highest_seat_ID;
