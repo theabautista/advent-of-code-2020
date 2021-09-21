@@ -5,6 +5,42 @@ namespace part_1
 {
     class Program
     {
+        static double FindRow(string boarding_pass_subset,int row_idx, double min_value, double max_value)
+        {
+            if (min_value != max_value)
+            {
+                switch (boarding_pass_subset[row_idx])
+                {
+                    case 'F':
+                        max_value -= Math.Ceiling((max_value - min_value) / 2.0);
+                        break;
+                    case 'B':
+                        min_value += Math.Ceiling((max_value - min_value) / 2.0);
+                        break;
+                }
+                return FindRow(boarding_pass_subset,row_idx+1,min_value,max_value);
+            }
+            return min_value;
+        }
+
+        public static double FindColumn(string boarding_pass_subset,int row_idx, double min_value, double max_value)
+        {
+            if (min_value != max_value)
+            {
+                switch (boarding_pass_subset[row_idx])
+                {
+                    case 'L':
+                        max_value -= Math.Ceiling((max_value - min_value) / 2.0);
+                        break;
+                    case 'R':
+                        min_value += Math.Ceiling((max_value - min_value) / 2.0);
+                        break;
+                }
+                return FindRow(boarding_pass_subset,row_idx+1,min_value,max_value);
+            }
+            return min_value;
+        }
+
         static void Main(string[] args)
         {
             StreamReader file = new StreamReader(args[0]);
@@ -12,44 +48,10 @@ namespace part_1
             double highest_seat_ID = 0;
 
             string line;
-            while ((line = file.ReadLine()) != null){
-
-                double left_ptr = 0;
-                double right_ptr = 7;
-
-                double front_ptr = 127;
-                double back_ptr = 0;
-
-                double row, col;
-
-                for (int i = 0; i < line.Length; i++)
-                {
-                   if (i < 7)
-                   {
-                        switch (line[i])
-                        {
-                            case 'F':
-                                front_ptr -= Math.Ceiling((front_ptr - back_ptr) / 2.0);
-                                break;
-                            case 'B':
-                                back_ptr += Math.Ceiling((front_ptr - back_ptr) / 2.0);
-                                break;
-                        }
-                   } else
-                   {
-                        switch (line[i])
-                        {
-                            case 'R':
-                                left_ptr += Math.Ceiling((right_ptr - left_ptr) / 2.0);
-                                break;
-                            case 'L':
-                                right_ptr -= Math.Ceiling((right_ptr - left_ptr) / 2.0);
-                                break;
-                        }
-                   }
-                } 
-                row = front_ptr;
-                col = right_ptr;
+            while ((line = file.ReadLine()) != null)
+            {
+                double row = FindRow(line.Substring(0,7),0,0,127);
+                double col = FindColumn(line[..2],0,0,7);
 
                 double seat_ID = (row * 8) + col;
                 highest_seat_ID = seat_ID > highest_seat_ID ? seat_ID : highest_seat_ID;
