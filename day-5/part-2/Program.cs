@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
-namespace part_1
+namespace part_2
 {
     class Program
     {
@@ -41,22 +43,29 @@ namespace part_1
             return min_value;
         }
 
+        static List<double> SuccessiveDifference(List<double> list_array)
+        {
+            List<double> differences = new List<double>();
+            return differences;
+        }
+
         static void Main(string[] args)
         {
             StreamReader file = new StreamReader(args[0]);
-            
-            double highest_seat_ID = 0;
+            List<int> seat_ID = new List<int>();
 
             string line;
             while ((line = file.ReadLine()) != null)
             {
-                double row = FindRow(line.Substring(0,7),0,0,127);
-                double col = FindColumn(line[^3..],0,0,7);
+                var row = Convert.ToInt32(FindRow(line.Substring(0,7),0,0,127));
+                var column = Convert.ToInt32(FindColumn(line[^3..],0,0,7));
 
-                double seat_ID = (row * 8) + col;
-                highest_seat_ID = seat_ID > highest_seat_ID ? seat_ID : highest_seat_ID;
+                seat_ID.Add((row*8)+column);
+
             }
-            Console.WriteLine($"Highest seat ID is {highest_seat_ID}");
+            var missing_seat_ID = Enumerable.Range(Convert.ToInt32(seat_ID.Min()),seat_ID.Distinct().Count()).Except(seat_ID);
+            var my_seat_ID = missing_seat_ID.ToList();
+            Console.WriteLine($"My seat ID is {my_seat_ID[0]}");
         }
     }
 }
